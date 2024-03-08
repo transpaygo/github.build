@@ -1,0 +1,44 @@
+# .github/workflows/reusable_workflow.yaml
+name: Reusable Workflow
+on:
+  workflow_call:
+    inputs:
+      dotnet-version:
+        required: true
+        type: string
+      package-version:
+        required: true
+        type: string
+      nuget-source:
+        required: true
+        type: string
+      csproj-source:
+        required: true
+        type: string
+    secrets:
+      api-key:
+        required: true
+        
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+   
+
+    - name: Build and pack
+      run: |
+        dotnet pack ${{ inputs.csproj-source }}  --configuration Release --include-symbols -p:PackageVersion=${{ inputs.package-version }} -o ${{ github.workspace }}
+
+    - name: Publish package
+      run: |
+        dotnet nuget push ${{ github.workspace }}/*.symbols.nupkg --source ${{ inputs.nuget-source }} --api-key ${{ secrets.api-key }}

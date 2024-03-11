@@ -24,7 +24,7 @@ jobs:
       with:
         dotnet-version: ${{ env.dotnet_version }}
 
-    - name: use buGet
+    - name: use nuGet
       id: add-nuget-source
       run: |
         dotnet nuget add source https://nuget.pkg.github.com/transpaygo/index.json -n github -u user -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
@@ -41,7 +41,7 @@ jobs:
         -p:PackageVersion=${{ env.dotnet_package_version }} \
         -o ${{ github.workspace }}
 
-    - name: Publish package
+    - name: publish
       run: |
         dotnet nuget push ${{ github.workspace }}/*.symbols.nupkg \
         --source https://nuget.pkg.github.com/transpaygo/index.json \

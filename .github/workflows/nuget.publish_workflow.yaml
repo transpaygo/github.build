@@ -24,6 +24,9 @@ jobs:
       with:
         dotnet-version: ${{ env.dotnet_version }}
 
+    - name: list nuget
+      run: dotnet nuget list source 
+
 # add dotnet restore with nuget.org
 # and custom nuget: https://nuget.pkg.github.com/transpaygo/index.json
     - name: Build and pack

@@ -14,32 +14,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: checkout
       uses: actions/checkout@v2
       with:
         fetch-depth: 1
 
-    - name: Setup .NET
+    - name: use .NET ${{ env.dotnet_version }}
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.dotnet_version }}
 
-    - name: Add GitHub NuGet Source
+    - name: use buGet
       id: add-nuget-source
       run: |
         dotnet nuget add source https://nuget.pkg.github.com/transpaygo/index.json -n github -u user -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
 
-    - name: Restore NuGet Sources
-      run: dotnet restore
+    - name: restore
+      run: dotnet restore ${{ inputs.dotnet_build_file }}
 
-# add dotnet restore with nuget.org
-# and custom nuget: https://nuget.pkg.github.com/transpaygo/index.json
-    - name: Build and pack
-# split in 2 steps dontet restore 
-# dotnet pack --no-restore arg
+    - name: pack
       run: |
-        dotnet pack ${{ inputs.dotnet_build_file }}  --configuration Release --include-symbols -p:PackageVersion=${{ env.dotnet_package_version }} -o ${{ github.workspace }}
+        dotnet pack ${{ inputs.dotnet_build_file }} |
+        --no-restore |
+        --configuration Release |
+        --include-symbols |
+        -p:PackageVersion=${{ env.dotnet_package_version }} |
+        -o ${{ github.workspace }}
 
     - name: Publish package
       run: |
-        dotnet nuget push ${{ github.workspace }}/*.symbols.nupkg --source https://nuget.pkg.github.com/transpaygo/index.json --api-key  ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget push ${{ github.workspace }}/*.symbols.nupkg |
+        --source https://nuget.pkg.github.com/transpaygo/index.json |
+        --api-key  ${{ secrets.GITHUB_TOKEN }}

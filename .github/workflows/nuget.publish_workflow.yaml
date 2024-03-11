@@ -3,13 +3,13 @@ name: Reusable Workflow
 on:
   workflow_call:
     inputs:
-      Dotnet_Version:
+      dotnet_version:
         required: true
         type: string
-      Dotnet_Package_Version:
+      dotnet_package_version:
         required: true
         type: string
-      Dotnet_Build_File:
+      dotnet_build_file:
         required: true
         type: string
 
@@ -26,11 +26,11 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ inputs.Dotnet_Version }}
+        dotnet-version: ${{ inputs.dotnet_version }}
 
     - name: Build and pack
       run: |
-        dotnet pack ${{ inputs.Dotnet_Build_File }}  --configuration Release --include-symbols -p:PackageVersion=${{ inputs.Dotnet_Package_Version }} -o ${{ github.workspace }}
+        dotnet pack ${{ inputs.dotnet_build_file }}  --configuration Release --include-symbols -p:PackageVersion=${{ inputs.dotnet_package_version }} -o ${{ github.workspace }}
 
     - name: Publish package
       run: |

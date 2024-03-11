@@ -31,7 +31,7 @@ jobs:
 
     - name: Build and pack
       run: |
-        dotnet pack ${{ dotnet-build-file }}  --configuration Release --include-symbols -p:PackageVersion=${{ inputs.dotnet-package-version }} -o ${{ github.workspace }}
+        dotnet pack ${{ inputs.dotnet-build-file }}  --configuration Release --include-symbols -p:PackageVersion=${{ inputs.dotnet-package-version }} -o ${{ github.workspace }}
 
     - name: Publish package
       run: |

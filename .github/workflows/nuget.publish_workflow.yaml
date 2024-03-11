@@ -34,15 +34,15 @@ jobs:
 
     - name: pack
       run: |
-        dotnet pack ${{ inputs.dotnet_build_file }} |
-        --no-restore |
-        --configuration Release |
-        --include-symbols |
-        -p:PackageVersion=${{ env.dotnet_package_version }} |
+        dotnet pack ${{ inputs.dotnet_build_file }} \
+        --no-restore \
+        --configuration Release \
+        --include-symbols \
+        -p:PackageVersion=${{ env.dotnet_package_version }} \
         -o ${{ github.workspace }}
 
     - name: Publish package
       run: |
-        dotnet nuget push ${{ github.workspace }}/*.symbols.nupkg |
-        --source https://nuget.pkg.github.com/transpaygo/index.json |
+        dotnet nuget push ${{ github.workspace }}/*.symbols.nupkg \
+        --source https://nuget.pkg.github.com/transpaygo/index.json \
         --api-key  ${{ secrets.GITHUB_TOKEN }}

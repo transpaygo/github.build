@@ -1,20 +1,16 @@
-# .github/workflows/reusable_workflow.yaml
-name: Reusable Workflow
+name: Dotnet 8.x nuget build and pack
 on:
   workflow_call:
     inputs:
-      dotnet_version:
-        required: true
-        type: string
-      dotnet_package_version:
-        required: true
-        type: string
       dotnet_build_file:
         required: true
         type: string
 
 jobs:
   build-and-pack:
+    env:
+        dotnet_version: 8.x
+        dotnet_package_version: 8.1.${{ github.run_number }}
     runs-on: ubuntu-latest
 
     steps:
@@ -26,11 +22,15 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ inputs.dotnet_version }}
+        dotnet-version: ${{ env.dotnet_version }}
 
+# add dotnet restore with nuget.org
+# and custom nuget: https://nuget.pkg.github.com/transpaygo/index.json
     - name: Build and pack
+# split in 2 steps dontet restore 
+# dotnet pack --no-restore arg
       run: |
-        dotnet pack ${{ inputs.dotnet_build_file }}  --configuration Release --include-symbols -p:PackageVersion=${{ inputs.dotnet_package_version }} -o ${{ github.workspace }}
+        dotnet pack ${{ inputs.dotnet_build_file }}  --configuration Release --include-symbols -p:PackageVersion=${{ env.dotnet_package_version }} -o ${{ github.workspace }}
 
     - name: Publish package
       run: |

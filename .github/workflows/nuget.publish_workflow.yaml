@@ -32,6 +32,9 @@ jobs:
     - name: list nuget
       run: dotnet nuget list source 
 
+    - name: Restore NuGet Sources
+      run: dotnet restore
+
 # add dotnet restore with nuget.org
 # and custom nuget: https://nuget.pkg.github.com/transpaygo/index.json
     - name: Build and pack

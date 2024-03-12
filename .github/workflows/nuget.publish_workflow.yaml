@@ -5,14 +5,12 @@ on:
       dotnet_build_file:
         required: true
         type: string
-    secrets:
-      token:
-        required: true
 jobs:
   build-and-pack:
     env:
-        dotnet_version: 8.x
-        dotnet_package_version: 8.1.${{ github.run_number }}
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+      dotnet_version: 8.x
+      dotnet_package_version: 8.1.${{ github.run_number }}
     runs-on: ubuntu-latest
       
     steps:
@@ -25,17 +23,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.dotnet_version }}
-
-    - name: show source
-      run: dotnet nuget list source
-
-    - name: use nuGet
-      id: add-nuget-source
-      run: |
-        dotnet nuget add source https://nuget.pkg.github.com/transpaygo/index.json -n github -u user -p ${{ secrets.token }} --store-password-in-clear-text
-        
-    - name: show source
-      run: dotnet nuget list source
+        source-url: https://nuget.pkg.github.com/transpaygo/index.json
+        cache: true
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       
     - name: restore
       run: dotnet restore ${{ inputs.dotnet_build_file }}

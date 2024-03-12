@@ -31,7 +31,7 @@ jobs:
         cache-dependency-path: src/dataAccess/packages.lock.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    - run: cat nuget.config
+    - run: cat /home/runner/work/common.core/nuget.config
 
     - name: restore
       run: dotnet restore ${{ inputs.dotnet_build_file }} --locked-mode

@@ -31,7 +31,6 @@ jobs:
         cache-dependency-path: src/dataAccess/packages.lock.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    - run: cat /home/runner/work/common.core/nuget.config
 
     - name: restore
       run: dotnet restore ${{ inputs.dotnet_build_file }} --locked-mode
@@ -47,6 +46,4 @@ jobs:
 
     - name: publish
       run: |
-        dotnet nuget push ${{ github.workspace }}/*.symbols.nupkg \
-        --source https://nuget.pkg.github.com/transpaygo/index.json \
-        --api-key  ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget push ${{ github.workspace }}/*.symbols.nupkg

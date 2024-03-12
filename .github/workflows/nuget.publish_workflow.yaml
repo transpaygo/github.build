@@ -27,10 +27,13 @@ jobs:
       with:
         dotnet-version: ${{ env.dotnet_version }}
         source-url: https://nuget.pkg.github.com/transpaygo/index.json
-#        cache: true
+        cache: true
+        cache-dependency-path: src/dataAccess/packages.lock.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    - run: dotnet restore ${{ inputs.dotnet_build_file }} --locked-mode
+
+    - name: restore
+      run: dotnet restore ${{ inputs.dotnet_build_file }} --locked-mode
 
     - name: pack
       run: |

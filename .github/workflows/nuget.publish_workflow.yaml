@@ -30,7 +30,7 @@ jobs:
         dotnet nuget add source https://nuget.pkg.github.com/transpaygo/index.json -n github -u user -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
 
     - name: show source
-      run: sources List
+      run: dotnet nuget list source
       
     - name: restore
       run: dotnet restore ${{ inputs.dotnet_build_file }}

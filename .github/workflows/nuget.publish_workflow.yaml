@@ -19,6 +19,9 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: info
+      run: dotnet --info
+
     - name: use .NET ${{ env.dotnet_version }}
       uses: actions/setup-dotnet@v4
       with:

@@ -30,9 +30,7 @@ jobs:
         cache: true
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      
-    - name: restore
-      run: dotnet restore ${{ inputs.dotnet_build_file }}
+    - run: dotnet restore ${{ inputs.dotnet_build_file }} --locked-mode
 
     - name: pack
       run: |

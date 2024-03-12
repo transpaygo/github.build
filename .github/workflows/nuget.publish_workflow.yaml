@@ -5,7 +5,9 @@ on:
       dotnet_build_file:
         required: true
         type: string
-
+    secrets:
+      token:
+        required: true
 jobs:
   build-and-pack:
     env:
@@ -30,7 +32,7 @@ jobs:
     - name: use nuGet
       id: add-nuget-source
       run: |
-        dotnet nuget add source https://nuget.pkg.github.com/transpaygo/index.json -n github -u user -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+        dotnet nuget add source https://nuget.pkg.github.com/transpaygo/index.json -n github -u user -p ${{ secrets.token }} --store-password-in-clear-text
         
     - name: show source
       run: dotnet nuget list source

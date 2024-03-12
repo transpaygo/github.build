@@ -32,7 +32,7 @@ jobs:
     - name: use nuGet
       id: add-nuget-source
       run: |
-        dotnet nuget add source https://nuget.pkg.github.com/transpaygo/index.json -n github -u user -p ${{ secrets.nuget_token }} --store-password-in-clear-text
+        dotnet nuget add source https://nuget.pkg.github.com/transpaygo/index.json -n github -u user -p ${{ secrets.nuget_token }}
         
     - name: show source
       run: dotnet nuget list source

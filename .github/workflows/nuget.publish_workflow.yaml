@@ -37,8 +37,8 @@ jobs:
         --configuration Release \
         --include-symbols \
         -p:PackageVersion=${{ env.dotnet_package_version }} \
-        -o ${{ github.workspace }}
+        -o ${{ github.workspace }}/.out
 
     - name: publish
       run: |
-        dotnet nuget push ${{ github.workspace }}/*.symbols.nupkg
+        dotnet nuget push ${{ github.workspace }}/.out/*.symbols.nupkg
